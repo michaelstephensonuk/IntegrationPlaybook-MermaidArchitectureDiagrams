@@ -1,0 +1,1 @@
+# IntegrationPlaybook-MermaidArchitectureDiagrams
