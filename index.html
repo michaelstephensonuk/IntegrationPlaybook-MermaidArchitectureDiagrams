@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="eaiConceptualViewApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>INTEGRATION ARCHITECTURE DIAGRAMS</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://kendo.cdn.telerik.com/2020.3.1118/styles/kendo.common-bootstrap.min.css" rel="stylesheet">
+    <link href="https://kendo.cdn.telerik.com/2020.3.1118/styles/kendo.bootstrap.min.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><strong>INTEGRATION ARCHITECTURE DIAGRAMS</strong></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid" ng-controller="eaiConceptualViewController as eaiConceptualView">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="#">SYSTEM INTEGRATIONS<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li><a href="#">DATA FLOWS</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>FILTERS</strong></div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="programsMultiSelect" class="col-sm-1 control-label">Programs</label>
+                                <div class="col-sm-11">
+                                    <select kendo-multi-select k-data-source="programs" k-ng-model="selectedPrograms"
+                                        k-on-change="updateDiagram()"></select>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectsMultiSelect" class="col-sm-1 control-label">Projects</label>
+                                <div class="col-sm-11">
+                                    <select kendo-multi-select k-data-source="projects" k-ng-model="selectedProjects"
+                                        k-on-change="updateDiagram()"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="systemsMultiSelect" class="col-sm-1 control-label">Systems</label>
+                                <div class="col-sm-11">
+                                    <select kendo-multi-select k-data-source="systems" k-ng-model="selectedSystems"
+                                        k-on-change="updateDiagram()"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="statusesMultiSelect" class="col-sm-1 control-label">Statuses</label>
+                                <div class="col-sm-11">
+                                    <select kendo-multi-select k-data-source="statuses" k-ng-model="selectedStatuses"
+                                        k-on-change="updateDiagram()"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>DIAGRAM</strong></div>
+                    <div class="panel-body">
+                        <div class="mermaid col-sm-12" id="mermaidDiagram"></div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>DATA</strong></div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>Program</th>
+                                        <th>Project</th>
+                                        <th>Source</th>
+                                        <th>Destination</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in filteredConceptualView">
+                                        <td>{{x.Label}}</td>
+                                        <td>{{x.Program}}</td>
+                                        <td>{{x.Project}}</td>
+                                        <td>{{x.SourceSystem}}</td>
+                                        <td>{{x.DestinationSystem}}</td>
+                                        <td>{{x.Status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.1118/js/angular.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.3.1118/js/kendo.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.mermaidAPI.initialize({
+            startOnLoad: false
+        });
+        var jq = $.noConflict();
+        angular.module('eaiConceptualViewApp', ["kendo.directives"])
+            .constant('_', window._)
+            .controller('eaiConceptualViewController', ['_', '$scope', 'eaiConceptualViewService', function (
+                _,
+                $scope,
+                eaiConceptualViewService
+            ) {
+                $scope.conceptualViewData = {};
+                $scope.programs = [];
+                $scope.selectedPrograms = [];
+                $scope.projects = [];
+                $scope.selectedProjects = [];
+                $scope.systems = [];
+                $scope.selectedSystems = [];
+                $scope.statuses = [];
+                $scope.selectedStatuses = [];
+                $scope.filteredConceptualView = [];
+
+                eaiConceptualViewService.getConceptualView().then(function (data) {
+                    $scope.conceptualViewData = data.data;
+                    var tempPrograms = [];
+                    var tempProjects = [];
+                    var tempSystems = [];
+                    var tempStatuses = [];
+                    angular.forEach($scope.conceptualViewData, function (value, key) {
+                        tempPrograms.push(value.Program);
+                        tempProjects.push(value.Project);
+                        tempSystems.push(value.SourceSystem);
+                        tempSystems.push(value.DestinationSystem);
+                        tempStatuses.push(value.Status);
+                    });
+                    $scope.programs = _.uniq(tempPrograms);
+                    $scope.projects = _.uniq(tempProjects);
+                    $scope.systems = _.uniq(tempSystems);
+                    $scope.statuses = _.uniq(tempStatuses);
+                });
+
+                $scope.updateDiagram = function () {
+                    $scope.filteredConceptualView = _.filter($scope.conceptualViewData, function (obj) {
+                        return $scope.selectedPrograms.includes(obj.Program) ||
+                            $scope.selectedProjects.includes(obj.Project) ||
+                            $scope.selectedSystems.includes(obj.SourceSystem) ||
+                            $scope.selectedSystems.includes(obj.DestinationSystem) ||
+                            $scope.selectedStatuses.includes(obj.Status)
+                    });
+
+                    var conceptualViewMarkup = "erDiagram\n";
+                    var direction = "";
+                    angular.forEach($scope.filteredConceptualView, function (value, key) {
+                        if (value.Direction.Value == "BiDirectional") {
+                            direction = "}|--|{";
+                        }
+                        else {
+                            direction = "}o--|{";
+                        };
+                        conceptualViewMarkup = conceptualViewMarkup.concat(value.SourceSystem + " " + direction + " " + value.DestinationSystem + " : \"" + value.Label + "\"\n");
+                    });
+
+                    if (conceptualViewMarkup != "") {
+                        mermaid.render('mermaidDiagramHolder', conceptualViewMarkup, function (svgCode) {
+                            document.getElementById('mermaidDiagram').innerHTML = svgCode;
+                        });
+                    }
+                };
+            }])
+            .factory('eaiConceptualViewService', ['$http', function (
+                $http
+            ) {
+                return {
+                    getConceptualView: function () {
+                        return $http.get('data.json')
+                    }
+                }
+            }]);
+    </script>
+</body>
+
+</html>
