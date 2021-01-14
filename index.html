@@ -163,11 +163,28 @@
 
                 $scope.updateDiagram = function () {
                     $scope.filteredConceptualView = _.filter($scope.conceptualViewData, function (obj) {
-                        return $scope.selectedPrograms.includes(obj.Program) ||
-                            $scope.selectedProjects.includes(obj.Project) ||
-                            $scope.selectedSystems.includes(obj.SourceSystem) ||
-                            $scope.selectedSystems.includes(obj.DestinationSystem) ||
-                            $scope.selectedStatuses.includes(obj.Status)
+                        var result = false;
+                        if (
+                            $scope.selectedPrograms.length == 0 &&
+                            $scope.selectedProjects.length == 0 &&
+                            $scope.selectedSystems.length == 0 
+                        ) {
+                            result = $scope.selectedStatuses.includes(obj.Status);
+                        } else if (
+                            $scope.selectedStatuses.length == 0
+                        ) {
+                            result = $scope.selectedPrograms.includes(obj.Program) ||
+                                $scope.selectedProjects.includes(obj.Project) ||
+                                $scope.selectedSystems.includes(obj.SourceSystem) ||
+                                $scope.selectedSystems.includes(obj.DestinationSystem);
+                        } else {
+                            result = ($scope.selectedPrograms.includes(obj.Program) ||
+                                $scope.selectedProjects.includes(obj.Project) ||
+                                $scope.selectedSystems.includes(obj.SourceSystem) ||
+                                $scope.selectedSystems.includes(obj.DestinationSystem)) &&
+                                $scope.selectedStatuses.includes(obj.Status)
+                        }
+                        return result;
                     });
 
                     var conceptualViewMarkup = "erDiagram\n";
