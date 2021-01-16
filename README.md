@@ -8,7 +8,7 @@ This video shows more about what we did and some resources are below with loads 
 
 
 
-- Youtube Video [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=kSCMduJu6Ro)
+![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=kSCMduJu6Ro)
 
-- [Integration Playbook documentation] (https://www.integration-playbook.io/docs/mermaid-architecture-diagram-tool)
+[Integration Playbook documentation](https://www.integration-playbook.io/docs/mermaid-architecture-diagram-tool)
 
