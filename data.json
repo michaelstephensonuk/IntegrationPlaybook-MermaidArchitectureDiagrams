@@ -1,0 +1,83 @@
+[
+  {
+    "SourceSystem": "SAP",
+    "DestinationSystem": "IBM",
+    "Label": "Supplier Sync",
+    "Direction": "One Way",
+    "Program": "Supplier Management Program",
+    "Project": "Partner Sync",
+    "Status": "Production"
+  },
+  {
+    "SourceSystem": "SAP",
+    "DestinationSystem": "Supplier_Portal",
+    "Label": "Supplier Sync",
+    "Direction": "One Way",
+    "Program": "Supplier Management Program",
+    "Project": "Partner Sync",
+    "Status": "Production"
+  },
+  {
+    "SourceSystem": "SAP",
+    "DestinationSystem": "CRM",
+    "Label": "Supplier Sync",
+    "Direction": "One Way",
+    "Program": "Supplier Management Program",
+    "Project": "Partner Sync",
+    "Status": "Production"
+  },
+  {
+    "SourceSystem": "SAP",
+    "DestinationSystem": "Power_Platform_Dataverse",
+    "Label": "Supplier Sync",
+    "Direction": "One Way",
+    "Program": "Supplier Management Program",
+    "Project": "Partner Sync",
+    "Status": "Production"
+  },
+  {
+    "SourceSystem": "Truck_Tracker",
+    "DestinationSystem": "SAP",
+    "Label": "Truck Tracking",
+    "Direction": "One Way",
+    "Program": "Supply Chain Program",
+    "Project": "Truck Tracker",
+    "Status": "Dev / Test"
+  },
+  {
+    "SourceSystem": "Truck_Tracker",
+    "DestinationSystem": "Power_Platform_Dataverse",
+    "Label": "Truck Tracking",
+    "Direction": "One Way",
+    "Program": "Supply Chain Program",
+    "Project": "Truck Tracker",
+    "Status": "Dev / Test"
+  },
+  {
+    "SourceSystem": "Truck_Tracker",
+    "DestinationSystem": "Customer_Portal",
+    "Label": "Truck Tracking",
+    "Direction": "One Way",
+    "Program": "Supply Chain Program",
+    "Project": "Truck Tracker",
+    "Status": "Dev / Test"
+  },
+  {
+    "SourceSystem": "Truck_Tracker",
+    "DestinationSystem": "CRM",
+    "Label": "Truck Tracking",
+    "Direction": "One Way",
+    "Program": "Supply Chain Program",
+    "Project": "Truck Tracker",
+    "Status": "Dev / Test"
+  },
+  {
+    "SourceSystem": "SAP",
+    "DestinationSystem": "Customer_Portal",
+    "Label": "Invoicing",
+    "Direction": "Bi-Directional",
+    "Program": "Customer Management Program",
+    "Project": "Finance",
+    "Status": "Production"
+  }
+]
